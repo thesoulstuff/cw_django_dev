@@ -1,0 +1,12 @@
+__pycache__/
+db.sqlite3
+.*env
+*.pyc
+.idea
+.aws/
+/static
+/media
+/wheelhouse
+/postgresql
+/pgadmin
+/database

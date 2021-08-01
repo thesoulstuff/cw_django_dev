@@ -11,8 +11,7 @@ Author: CW-TEAM
 ### Constraints
 
 Esperamos que dejes una app funcional. 
-* En la página principal se tienen que mostrar las últimas 20 preguntas que los usuarios realizan,
-y se tiene que ordenar según el siguiente ranking:
+* En la página principal se tienen que mostrar las mejores 20 preguntas ordenadas según el siguiente ranking:
     1. Cada respuesta suma 10 puntos al ranking
     2. Cada like suma 5 puntos al ranking
     3. Cada dislike resta 3 puntos al ranking

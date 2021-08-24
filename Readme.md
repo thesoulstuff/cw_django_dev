@@ -42,7 +42,7 @@ Este es un ejemplo de como queda el listado con su ranking y se ve como respondi
 
 ## Instrucciones de Instalación:
 
-- Creacion de entorno virtual
+Creacion de entorno virtual
 
 ```bash
 # Crear entorno

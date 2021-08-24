@@ -32,20 +32,20 @@ class QuestionListView(ListView):
 
 
     def user_value(self, user, question):
-        answer = Answer.objects.get(question=question, author=user)
-        if answer:
+        if Answer.objects.filter(question=question, author=user).exists():
+            answer = Answer.objects.get(question=question, author=user)
             return answer.value
         return 0
 
     def user_likes(self, user, question):
-        answer = Answer.objects.get(question=question, author=user)
-        if answer:
+        if Answer.objects.filter(question=question, author=user).exists():
+            answer = Answer.objects.get(question=question, author=user)
             return answer.liked
-        return False
+        return 0
 
     def user_dislikes(self, user, question):
-        answer = Answer.objects.get(question=question, author=user)
-        if answer:
+        if Answer.objects.filter(question=question, author=user).exists():
+            answer = Answer.objects.get(question=question, author=user)
             return not answer.liked if answer.liked != None else None
         return False
 

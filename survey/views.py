@@ -7,14 +7,18 @@ from survey.models import Question, Answer
 
 class QuestionListView(ListView):
     model = Question
+    paginated_by = 20
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
+        object_list = []
+        context["object_list"] = sorted(context["object_list"], key= lambda x: -x.ranking)[:20]
         if user.is_anonymous:
             return context
-        object_list = []
         for question in context.get('object_list'):
+            
             question.user_value = self.user_value(
                 user,
                 question
@@ -50,7 +54,6 @@ class QuestionListView(ListView):
             return not answer.liked if answer.liked != None else None
         return False
 
-@login_required
 class QuestionCreateView(CreateView):
     model = Question
     fields = ['title', 'description']
@@ -62,7 +65,6 @@ class QuestionCreateView(CreateView):
         return super().form_valid(form)
 
 
-@login_required
 class QuestionUpdateView(UpdateView):
     model = Question
     fields = ['title', 'description']

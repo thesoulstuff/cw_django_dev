@@ -39,3 +39,40 @@ ranking: `6*10 + 2*5 - 1*3 + 10 = 60 + 10 - 3 +10 = 77`
 Este es un ejemplo de como queda el listado con su ranking y se ve como respondió/votó el usuario actual.
 
 ![Example](example.png)
+
+## Instrucciones de Instalación:
+
+- Creacion de entorno virtual
+
+```bash
+# Crear entorno
+python -m venv cw-env
+
+# activar entorno (LINUX)
+source cw-env/bin/activate
+
+# activar entorno (WINDOWS)
+cw-env/scripts/activate
+
+# Instalar dependencias
+pip install -r requirements.txt
+
+# Crear archivos de migración
+python manage.py makemigrations
+
+# Realizar migraciones a db
+python manage.py migrate
+
+```
+
+Para ejecutar el servidor en ambiente local utilizar:
+
+```bash
+python manage.py runserver
+```
+
+Los tests generados para la evaluación pueden ejecutarse mendiante el siguiente comando:
+
+```bash
+python manage.py test
+```

@@ -7,6 +7,48 @@ from survey.models import Question, Answer
 class QuestionListView(ListView):
     model = Question
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+        if user.is_anonymous:
+            return context
+        object_list = []
+        for question in context.get('object_list'):
+            question.user_value = self.user_value(
+                user,
+                question
+            )
+            question.user_likes = self.user_likes(
+                user,
+                question
+            )
+            question.user_dislikes = self.user_dislikes(
+                user,
+                question
+            )
+            object_list.append(question)
+        context["object_list"] = object_list
+        return context
+
+
+    def user_value(self, user, question):
+        answer = Answer.objects.get(question=question, author=user)
+        if answer:
+            return answer.value
+        return 0
+
+    def user_likes(self, user, question):
+        answer = Answer.objects.get(question=question, author=user)
+        if answer:
+            return answer.liked
+        return False
+
+    def user_dislikes(self, user, question):
+        answer = Answer.objects.get(question=question, author=user)
+        if answer:
+            return not answer.liked if answer.liked != None else None
+        return False
+
 
 class QuestionCreateView(CreateView):
     model = Question
@@ -27,11 +69,10 @@ class QuestionUpdateView(UpdateView):
 
 def answer_question(request):
     question_pk = request.POST.get('question_pk')
-    print(request.POST)
     if not request.POST.get('question_pk'):
         return JsonResponse({'ok': False})
     question = Question.objects.filter(pk=question_pk)[0]
-    answer = Answer.objects.get(question=question, author=request.user)
+    answer, created = Answer.objects.get_or_create(question=question, author=request.user)
     answer.value = request.POST.get('value')
     answer.save()
     return JsonResponse({'ok': True})
@@ -41,6 +82,12 @@ def like_dislike_question(request):
     if not request.POST.get('question_pk'):
         return JsonResponse({'ok': False})
     question = Question.objects.filter(pk=question_pk)[0]
+    answer, created = Answer.objects.get_or_create(question=question, author=request.user)
+    if request.POST["liked"] == 'liked':
+        answer.liked = True
+    else:
+        answer.liked = False
     # TODO: Dar Like
+    answer.save()
     return JsonResponse({'ok': True})
 

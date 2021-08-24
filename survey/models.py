@@ -9,6 +9,7 @@ class Question(models.Model):
                                on_delete=models.CASCADE)
     title = models.CharField('Título', max_length=200)
     description = models.TextField('Descripción')
+
     # TODO: Quisieramos tener un ranking de la pregunta, con likes y dislikes dados por los usuarios.
 
 
@@ -28,3 +29,4 @@ class Answer(models.Model):
     author = models.ForeignKey(get_user_model(), related_name="answers", verbose_name='Autor', on_delete=models.CASCADE)
     value = models.PositiveIntegerField("Respuesta", default=0)
     comment = models.TextField("Comentario", default="", blank=True)
+    liked = models.BooleanField(verbose_name="Me Gusta", null=True)

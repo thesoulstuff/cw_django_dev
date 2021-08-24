@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.list import ListView
@@ -49,7 +50,7 @@ class QuestionListView(ListView):
             return not answer.liked if answer.liked != None else None
         return False
 
-
+@login_required
 class QuestionCreateView(CreateView):
     model = Question
     fields = ['title', 'description']
@@ -61,12 +62,14 @@ class QuestionCreateView(CreateView):
         return super().form_valid(form)
 
 
+@login_required
 class QuestionUpdateView(UpdateView):
     model = Question
     fields = ['title', 'description']
     template_name = 'survey/question_form.html'
 
 
+@login_required
 def answer_question(request):
     question_pk = request.POST.get('question_pk')
     if not request.POST.get('question_pk'):
@@ -77,6 +80,7 @@ def answer_question(request):
     answer.save()
     return JsonResponse({'ok': True})
 
+@login_required
 def like_dislike_question(request):
     question_pk = request.POST.get('question_pk')
     if not request.POST.get('question_pk'):
